@@ -1,12 +1,30 @@
-﻿<Window x:Class="GoDaddyWatcher.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GoDaddyWatcher"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="GoDaddyWatcher.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="GoDaddyWatcher" Height="798" Width="500" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Icon="programmer.png" >
     <Grid>
-        
+        <GroupBox Header="Стартовые настройки" HorizontalAlignment="Left" Height="127" Margin="0,10,0,0" VerticalAlignment="Top" Width="494" BorderBrush="#FF2080B9" Background="#FFF9F9F9">
+            <Grid HorizontalAlignment="Left" Height="100" Margin="0,0,0,-6" VerticalAlignment="Top" Width="100">
+                <Label Content="BL" HorizontalAlignment="Left" Margin="0,0,-20,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" RenderTransformOrigin="-3.749,0.033" Width="120"/>
+                <TextBox x:Name="BlTextBox" HorizontalAlignment="Left" Height="38" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18" Margin="0,34,-20,0" Text="0"/>
+                <Label Content="Trust Flow" HorizontalAlignment="Left" Margin="181,0,-201,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" RenderTransformOrigin="0.636,1.431" Width="120"/>
+                <TextBox x:Name="TrustFlowTextBox" HorizontalAlignment="Left" Height="38" Margin="181,34,-201,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18" Text="0"/>
+                <Label Content="Citation Flow" HorizontalAlignment="Left" Margin="360,0,-378,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" RenderTransformOrigin="0.2,0.567" Width="118"/>
+                <TextBox x:Name="CitationFlow" HorizontalAlignment="Left" Height="38" Margin="360,34,-380,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18" Text="0"/>
+            </Grid>
+        </GroupBox>
+        <Button x:Name="LoadProxy" Content="Загрузить прокси" Margin="-4,142,-7,0" VerticalAlignment="Top" Height="41" FontSize="16" Background="#FF0BB842" Click="LoadProxy_Click" BorderBrush="{x:Null}"/>
+        <TextBlock x:Name="StatsBlock" Margin="0,273,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="70" FontSize="16" Background="#FFFDE7E7" Padding="10,0,0,0"><Run Text="Всего сайтов в БД: 1000"/><LineBreak/><Run Text="Найдено новых за сеанс: 200"/><LineBreak/><Run Text="Найдено подходящих за сеанс: 120"/></TextBlock>
+        <Label Content="Статистика" HorizontalAlignment="Left" Margin="0,239,0,0" VerticalAlignment="Top" Width="494" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#FFF9F0F0"/>
+        <RichTextBox x:Name="LogFile" HorizontalAlignment="Left" Height="387" Margin="0,382,0,0" VerticalAlignment="Top" Width="494" FontSize="14" Background="#FFFBEDED" IsReadOnly="True" IsUndoEnabled="False" Block.LineHeight="6">
+            <FlowDocument/>
+        </RichTextBox>
+        <Button x:Name="StartWatching" Content="Начать отслеживание новых сайтов" Margin="0,188,0,0" VerticalAlignment="Top" Height="41" FontSize="16" Background="#FF0BB842" Click="StartWatching_Click" IsEnabled="False"/>
+        <Label Content="Лог подходящих сайтов" HorizontalAlignment="Left" Margin="0,348,0,0" VerticalAlignment="Top" Width="494" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#FFF9F0F0"/>
     </Grid>
 </Window>
