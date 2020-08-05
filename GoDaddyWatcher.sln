@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoDaddyWatcher", "GoDaddyWatcher\GoDaddyWatcher.csproj", "{4FD895DA-399E-40CD-A06F-FB7F42C1DBC8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckCorrectWork", "CheckCorrectWork\CheckCorrectWork.csproj", "{348753EA-555F-481A-8A4B-D151F55449FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{4FD895DA-399E-40CD-A06F-FB7F42C1DBC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FD895DA-399E-40CD-A06F-FB7F42C1DBC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FD895DA-399E-40CD-A06F-FB7F42C1DBC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{348753EA-555F-481A-8A4B-D151F55449FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{348753EA-555F-481A-8A4B-D151F55449FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{348753EA-555F-481A-8A4B-D151F55449FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{348753EA-555F-481A-8A4B-D151F55449FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

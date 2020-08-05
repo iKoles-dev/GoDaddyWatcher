@@ -8,7 +8,7 @@ namespace GoDaddyWatcher.Model.MainSites.GoDaddy
 {
     public class GoDaddy : Aggregator
     {
-        private const int MaxPageNumber = 30;
+        private const int MaxPageNumber = 40;
 
         public override void CrawlData()
         {

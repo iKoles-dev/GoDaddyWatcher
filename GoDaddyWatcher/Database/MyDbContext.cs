@@ -5,6 +5,7 @@ namespace GoDaddyWatcher.Database
     public class MyDbContext : DbContext
     {
         public DbSet<Site> Sites { get; set; }
+        public DbSet<Redirects> Redirects { get; set; }
         public MyDbContext()
         {
             Database.EnsureCreated();

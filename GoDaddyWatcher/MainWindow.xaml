@@ -6,25 +6,28 @@
         xmlns:local="clr-namespace:GoDaddyWatcher"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="GoDaddyWatcher.MainWindow"
         mc:Ignorable="d"
-        Title="GoDaddyWatcher" Height="798" Width="500" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Icon="programmer.png" >
+        Title="GoDaddyWatcher" Height="652.65" Width="500" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Icon="programmer.png" >
     <Grid>
         <GroupBox Header="Стартовые настройки" HorizontalAlignment="Left" Height="127" Margin="0,10,0,0" VerticalAlignment="Top" Width="494" BorderBrush="#FF2080B9" Background="#FFF9F9F9">
             <Grid HorizontalAlignment="Left" Height="100" Margin="0,0,0,-6" VerticalAlignment="Top" Width="100">
                 <Label Content="BL" HorizontalAlignment="Left" Margin="0,0,-20,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" RenderTransformOrigin="-3.749,0.033" Width="120"/>
-                <TextBox x:Name="BlTextBox" HorizontalAlignment="Left" Height="38" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18" Margin="0,34,-20,0" Text="0"/>
+                <TextBox x:Name="BlTextBox" HorizontalAlignment="Left" Height="38" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18" Margin="0,34,-20,0" Text="0" TextChanged="BlTextBox_TextChanged"/>
                 <Label Content="Trust Flow" HorizontalAlignment="Left" Margin="181,0,-201,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" RenderTransformOrigin="0.636,1.431" Width="120"/>
-                <TextBox x:Name="TrustFlowTextBox" HorizontalAlignment="Left" Height="38" Margin="181,34,-201,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18" Text="0"/>
+                <TextBox x:Name="TrustFlowTextBox" HorizontalAlignment="Left" Height="38" Margin="181,34,-201,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18" Text="0" TextChanged="TrustFlowTextBox_TextChanged"/>
                 <Label Content="Citation Flow" HorizontalAlignment="Left" Margin="360,0,-378,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" RenderTransformOrigin="0.2,0.567" Width="118"/>
-                <TextBox x:Name="CitationFlow" HorizontalAlignment="Left" Height="38" Margin="360,34,-380,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18" Text="0"/>
+                <TextBox x:Name="CitationFlow" HorizontalAlignment="Left" Height="38" Margin="360,34,-380,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18" Text="0" TextChanged="CitationFlow_TextChanged"/>
             </Grid>
         </GroupBox>
         <Button x:Name="LoadProxy" Content="Загрузить прокси" Margin="-4,142,-7,0" VerticalAlignment="Top" Height="41" FontSize="16" Background="#FF0BB842" Click="LoadProxy_Click" BorderBrush="{x:Null}"/>
-        <TextBlock x:Name="StatsBlock" Margin="0,273,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="70" FontSize="16" Background="#FFFDE7E7" Padding="10,0,0,0"><Run Text="Всего сайтов в БД: 1000"/><LineBreak/><Run Text="Найдено новых за сеанс: 200"/><LineBreak/><Run Text="Найдено подходящих за сеанс: 120"/></TextBlock>
-        <Label Content="Статистика" HorizontalAlignment="Left" Margin="0,239,0,0" VerticalAlignment="Top" Width="494" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#FFF9F0F0"/>
-        <RichTextBox x:Name="LogFile" HorizontalAlignment="Left" Height="387" Margin="0,382,0,0" VerticalAlignment="Top" Width="494" FontSize="14" Background="#FFFBEDED" IsReadOnly="True" IsUndoEnabled="False" Block.LineHeight="6">
-            <FlowDocument/>
-        </RichTextBox>
-        <Button x:Name="StartWatching" Content="Начать отслеживание новых сайтов" Margin="0,188,0,0" VerticalAlignment="Top" Height="41" FontSize="16" Background="#FF0BB842" Click="StartWatching_Click" IsEnabled="False"/>
-        <Label Content="Лог подходящих сайтов" HorizontalAlignment="Left" Margin="0,348,0,0" VerticalAlignment="Top" Width="494" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#FFF9F0F0"/>
+        <TextBlock x:Name="StatsBlock" Margin="0,339,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="70" FontSize="16" Background="#FFFDE7E7" Padding="10,0,0,0"><Run Text="Всего сайтов в БД: 1000"/><LineBreak/><Run Text="Найдено новых за сеанс: 200"/><LineBreak/><Run Text="Найдено подходящих за сеанс: 120"/></TextBlock>
+        <Label Content="Статистика" HorizontalAlignment="Left" Margin="0,305,0,0" VerticalAlignment="Top" Width="494" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#FFF9F0F0"/>
+        <Button x:Name="StartWatching" Content="Начать отслеживание новых сайтов" Margin="0,254,0,0" VerticalAlignment="Top" Height="41" FontSize="16" Background="#FF0BB842" Click="StartWatching_Click" IsEnabled="False"/>
+        <Button x:Name="OpenTable" Content="Открыть таблицу" Margin="0,414,0,0" VerticalAlignment="Top" Height="41" FontSize="16" Background="#FF0BB842" Click="OpenTable_Click"/>
+        <Button x:Name="OpenDB" Content="Открыть базу данных" Margin="0,460,0,0" VerticalAlignment="Top" Height="41" FontSize="16" Background="#FF1B7C3A" Click="OpenDB_Click"/>
+        <Button x:Name="ManualCheck" Content="Ручная загрузка" Margin="0,506,0,0" VerticalAlignment="Top" Height="41" FontSize="16" Background="#FF0BB842" Click="ManualCheck_Click" IsEnabled="False"/>
+        <TextBox x:Name="Login" HorizontalAlignment="Left" Height="31" Margin="10,218,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170"/>
+        <TextBox x:Name="Password" HorizontalAlignment="Left" Height="31" Margin="314,218,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170"/>
+        <Label Content="Логин прокси" HorizontalAlignment="Left" Margin="10,188,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" RenderTransformOrigin="-3.749,0.033" Width="170"/>
+        <Label Content="Пароль прокси" HorizontalAlignment="Left" Margin="314,188,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" RenderTransformOrigin="-3.749,0.033" Width="170"/>
     </Grid>
 </Window>

@@ -201,6 +201,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="HomeBrew\Proxies.cs" />
+    <Compile Include="obj\Release\Table.g.cs" />
+    <Compile Include="View\DataBaseTable.xaml.cs">
+      <DependentUpon>DataBaseTable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ManualLoad.xaml.cs">
+      <DependentUpon>ManualLoad.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ManualResult.xaml.cs">
+      <DependentUpon>ManualResult.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SiteView.cs" />
+    <Compile Include="View\StandartTable.xaml.cs">
+      <DependentUpon>StandartTable.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -209,7 +224,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ControlsContainer.cs" />
     <Compile Include="Database\MyDbContext.cs" />
+    <Compile Include="Database\Redirects.cs" />
     <Compile Include="Database\Site.cs" />
     <Compile Include="Database\SiteType.cs" />
     <Compile Include="HomeBrew\Additional\Useragents.cs" />
@@ -222,9 +239,17 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\DataBaseTable.xaml" />
+    <Page Include="View\ManualLoad.xaml" />
+    <Page Include="View\ManualResult.xaml" />
+    <Page Include="View\StandartTable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\GoogleCheck.cs" />
+    <Compile Include="Model\ResultWriter.cs" />
+    <Compile Include="Model\SiteChecker.cs" />
     <Compile Include="Model\MainSites\Aggregator.cs" />
     <Compile Include="Model\MainSites\GoDaddy\GoDaddy.cs" />
     <Compile Include="Model\SiteWatcher.cs" />
@@ -247,8 +272,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="obj\Release\App.baml" />
+    <Content Include="obj\Release\GoDaddyWatcher_MarkupCompile.cache" />
+    <Content Include="obj\Release\MainWindow.baml" />
+    <Content Include="obj\Release\Table.baml" />
+    <None Include="Resources\success.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Resource Include="programmer.png" />
     <Content Include="Resources\programmer.png" />
+    <Resource Include="View\programmer.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.3.1.3\build\MaterialDesignThemes.targets')" />

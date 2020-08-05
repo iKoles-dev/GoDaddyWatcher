@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
-using Homebrew.Enums;
+ using GoDaddyWatcher.HomeBrew;
+ using Homebrew.Enums;
 
 namespace Homebrew.ParserComponents
 {
@@ -77,14 +78,16 @@ namespace Homebrew.ParserComponents
         /// </summary>
         /// <param name="proxy">IP-адрес прокси</param>
         /// <param name="timeOut"></param>
-        /// <param name="proxyType"></param>
-        public bool SetProxy(string proxy, int timeOut=5000,  string proxyType = "http")
+        public bool SetProxy(string proxy, int timeOut=5000)
         {
             SetTimout(timeOut);
             try
             {
-                var tempProxy = proxy.StartsWith(proxyType) ? proxy : $"{proxyType}://{proxy}";
-                RowRequest.Proxy = new WebProxy(new Uri(tempProxy));
+                var tempProxy = proxy.StartsWith("http") ? proxy : $"http://{proxy}";
+                RowRequest.Proxy = new WebProxy(new Uri(tempProxy))
+                {
+                    Credentials = new NetworkCredential(Proxies.Login, Proxies.Password)
+                };
                 return true;
             }
             catch (Exception)
