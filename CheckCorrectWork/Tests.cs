@@ -13,7 +13,7 @@ namespace CheckCorrectWork
         {
             Site site = new Site()
             {
-                Link = "cyborgmanifesto.org"
+                Link = "iwalktheextramile.com"
             };
             SiteChecker siteChecker = new SiteChecker(site);
             siteChecker.Check();

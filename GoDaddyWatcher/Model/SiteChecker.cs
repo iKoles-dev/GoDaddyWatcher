@@ -23,16 +23,58 @@ namespace GoDaddyWatcher.Model
 
         public void Check()
         {
-            _site.PassGoogleSearchTest = GoogleCheck();
-            if (_site.PassGoogleSearchTest)
+            // _site.PassGoogleSearchTest = GoogleCheck();
+            // if (_site.PassGoogleSearchTest)
+            // {
+            //     CheckTrust();
+            //     if (IsFitsMinimalValues())
+            //     {
+            //         WebArchiveCrawl();
+            //         FinalCheck();
+            //     }
+            // }
+            
+            // WebArchiveCrawl();
+            // FinalCheck();
+            // if (FitsRequirements)
+            // {
+            //     Interlocked.Increment(ref ControlsContainer.EndWebarchive);
+            //     CheckTrust();
+            //     if (!IsFitsMinimalValues())
+            //     {
+            //         FitsRequirements = false;
+            //     }
+            //     else
+            //     {
+            //         Interlocked.Increment(ref ControlsContainer.EndCheckTrust);
+            //         if (!GoogleCheck())
+            //         {
+            //             FitsRequirements = false;
+            //         }
+            //     }
+            // }
+            
+            CheckTrust();
+            if (!IsFitsMinimalValues())
             {
-                CheckTrust();
-                if (IsFitsMinimalValues())
+                FitsRequirements = false;
+            }
+            Interlocked.Increment(ref ControlsContainer.EndCheckTrust);
+
+            if (FitsRequirements)
+            {
+                WebArchiveCrawl();
+                FinalCheck();
+                if (FitsRequirements)
                 {
-                    WebArchiveCrawl();
-                    FinalCheck();
+                    Interlocked.Increment(ref ControlsContainer.EndWebarchive);
+                    if (!GoogleCheck())
+                    {
+                        FitsRequirements = false;
+                    }
                 }
             }
+            
         }
 
         private void FinalCheck()
@@ -56,14 +98,23 @@ namespace GoDaddyWatcher.Model
 
         private bool GoogleCheck()
         {
+            return true;
             LinkParser linkParser;
-            do
-            {
-                ReqParametres reqParametres = new ReqParametres("https://www.google.com/search?q=site:"+_site.Link);
-                reqParametres.SetUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.38 Safari/537.36");
-                reqParametres.SetProxy(Proxies.GetProxy());
-                linkParser = new LinkParser(reqParametres.Request);
-            } while (linkParser.IsError|| linkParser.Data.Contains("recaptcha"));
+            // do
+            // {
+            //     ReqParametres reqParametres = new ReqParametres("https://www.google.com/search?q=site:"+_site.Link);
+            //     reqParametres.SetUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.38 Safari/537.36");
+            //     reqParametres.SetProxy(Proxies.GetProxy());
+            //     linkParser = new LinkParser(reqParametres.Request);
+            //     if (linkParser.IsError || linkParser.Data.Contains("recaptcha"))
+            //     {
+            //         Thread.Sleep(2000);
+            //     }
+            // } while (linkParser.IsError|| linkParser.Data.Contains("recaptcha"));
+            ReqParametres reqParametres = new ReqParametres("https://www.google.com/search?q=site:"+_site.Link);
+            reqParametres.SetUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.38 Safari/537.36");
+            // reqParametres.SetProxy(Proxies.GetProxy());
+            linkParser = new LinkParser(reqParametres.Request);
             return linkParser.Data.Contains("result-stats\">");
         }
         private void CheckTrust()
@@ -84,11 +135,11 @@ namespace GoDaddyWatcher.Model
                     Console.WriteLine(e);
                 }
 
-                if (linkParser.Data.Contains("Host saved. Waiting for data."))
+                if (linkParser.Data.Contains("message\":\"Host "))
                 {
                     Thread.Sleep(TimeSpan.FromSeconds(5));
                 }
-            } while (linkParser.Data.Contains("Host saved. Waiting for data."));
+            } while (linkParser.Data.Contains("message\":\"Host "));
         }
 
         private long _threadCount;
@@ -101,11 +152,9 @@ namespace GoDaddyWatcher.Model
             object locker = new object();
             timeStamps.ForEach(timestamp =>
             {
-                var temp = timestamp;
-                Interlocked.Increment(ref _threadCount);
-                new Thread(() =>
+                do
                 {
-                    reqParametres = new ReqParametres($"http://web.archive.org/web/{temp}/{_site.Link}");
+                    reqParametres = new ReqParametres($"http://web.archive.org/web/{timestamp}/{_site.Link}");
                     linkParser = new LinkParser(reqParametres.Request);
                     string redirect = linkParser.Data.ParsFromTo("Got an HTTP ", " ");
                     string redirectUrl = linkParser.Data.ParsFromTo("<p class=\"code\">Redirecting to...</p>","<p class=\"impatient\">").ParsFromTo("<p class=\"code shift target\">","</p>");
@@ -121,13 +170,12 @@ namespace GoDaddyWatcher.Model
                         }
                     }
 
-                    Interlocked.Decrement(ref _threadCount);
-                }){IsBackground = true}.Start();
+                    if (linkParser.Data.Contains("Too Many Requests") || linkParser.IsError)
+                    {
+                        Thread.Sleep(10000);
+                    }
+                } while (linkParser.Data.Contains("Too Many Requests")|| linkParser.IsError);
             });
-            while (Interlocked.Read(ref _threadCount)>0)
-            {
-                Thread.Sleep(1000);
-            }
             _site.Redirects = redirects;
         }
         

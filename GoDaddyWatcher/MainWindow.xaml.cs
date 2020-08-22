@@ -1,4 +1,5 @@
-﻿﻿using System.Collections.Generic;
+﻿﻿using System;
+ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -87,10 +88,7 @@ namespace GoDaddyWatcher
         public MainWindow()
         {
             InitializeComponent();
-            using (var db = new MyDbContext())
-            {
-                db.Database.Migrate();
-            }
+            File.Delete("Sites.db");
             using (var db = new MyDbContext())
             {
                 ControlsContainer.Stats = StatsBlock;

@@ -13,7 +13,7 @@ namespace GoDaddyWatcher
         public static int Bl, TrustFlow, CitationFlow;
         public static TextBlock Stats;
         public static int FoundSites;
-        public static long FoundFittedSites;
+        public static long FoundFittedSites, EndWebarchive, EndCheckTrust, StartWhois;
         public static ObservableCollection<SiteView> GoodUsers = new ObservableCollection<SiteView>();
         public static List<SiteView> ManualUsers = new List<SiteView>();
     }

@@ -1,9 +1,15 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Cgrooo_005CRiderProjects_005CHomebrew_005CHomebrew_005Cbin_005CRelease_005Cnetcoreapp3_002E1_005CHomebrew_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=11d9abc7_002D741d_002D48fa_002D9635_002De607b65541c9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ValidTest1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::348753EA-555F-481A-8A4B-D151F55449FF::.NETFramework,Version=v4.8::CheckCorrectWork.Tests.ValidTest1&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9a40437f_002D5081_002D4538_002D97d7_002D3630b6c1da28/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::348753EA-555F-481A-8A4B-D151F55449FF::.NETFramework,Version=v4.8::CheckCorrectWork.Tests.ValidTest2&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::348753EA-555F-481A-8A4B-D151F55449FF::.NETFramework,Version=v4.8::CheckCorrectWork.Tests.ValidTest1&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:Boolean x:Key="/Default/UserDictionary/Words/=baid/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=baid/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Whois/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

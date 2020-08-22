@@ -1,26 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 using GoDaddyWatcher.Database;
 using GoDaddyWatcher.Model.MainSites;
 using GoDaddyWatcher.Model.MainSites.GoDaddy;
 using GoDaddyWatcher.View;
+using Homebrew.Additional;
+using Homebrew.Enums;
+using Homebrew.ParserComponents;
+using Newtonsoft.Json;
 
 namespace GoDaddyWatcher.Model
 {
+    public class DomainsContainer
+    {
+        public List<string> domains;
+    }
     public class SiteWatcher
     {
-        private Stack<Site> _sitesToCheck = new Stack<Site>();
+        private List<string> _sitesToCheck = new List<string>();
+        private int _amountToCheck;
+        private Stack<Site> _sitesToCheckAfterWhois = new Stack<Site>();
         private readonly object _locker = new object();
         private long _threadCount;
-        private int _maxThreadCount = 20;
+        private int _maxThreadCount = 200;
+        private DateTime _startDate;
         public SiteWatcher()
         {
+            _startDate = DateTime.Now.AddYears(-4);
             StatsWatcher();
-            SetBaseValues();
+            // SetBaseValues();
+            WhoisChecking();
             PeriodicalSitesCrawling();
             SitesChecking();
         }
@@ -36,13 +51,103 @@ namespace GoDaddyWatcher.Model
                     {
                         allCount = db.Sites.Count();
                     }
-                    Application.Current.Dispatcher.Invoke(() =>
+
+                    lock (_locker)
                     {
-                        ControlsContainer.Stats.Text =
-                            $"Всего сайтов в базе: {allCount}\nНайдено за сеанс: {ControlsContainer.FoundSites}\nНайдено подходящих за сеанс: {ControlsContainer.FoundFittedSites}";
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            ControlsContainer.Stats.Text =
+                                // $"Всего сайтов в базе: {allCount}\nНайдено за сеанс: {ControlsContainer.FoundSites}/ CheckTrust: {ControlsContainer.StartWebarchive} / Google {ControlsContainer.StartGoogle}\nНайдено подходящих за сеанс: {ControlsContainer.FoundFittedSites}";
+                                $"Всего сайтов в базе: {allCount}\nНайдено за сеанс: {ControlsContainer.FoundSites} \\ {_amountToCheck} \\ WS: {ControlsContainer.StartWhois} \\ CT: {ControlsContainer.EndCheckTrust} \\ WA: {ControlsContainer.EndWebarchive}\nНайдено подходящих за сеанс: {ControlsContainer.FoundFittedSites}";
+
+                        });
+                    }
+                    Thread.Sleep(TimeSpan.FromSeconds(1));
+                }
+            }){IsBackground = true}.Start();
+        }
+
+        private void WhoisChecking()
+        {
+            new Thread(() =>
+            {
+                while (true)
+                {
+                    bool hasSitesToCheck;
+                    lock (_locker)
+                    {
+                        hasSitesToCheck = _sitesToCheck.Count > 0;
+                    }
+
+                    if (hasSitesToCheck)
+                    {
+                        LinkParser linkParser;
+                        ReqParametres reqParametres;
+                        //Проверяем доступность ПО
+                        do
+                        {
+                            reqParametres = new ReqParametres("http://localhost:8079/greeting");
+                            linkParser = new LinkParser(reqParametres.Request);
+                            if (!linkParser.Data.Contains("ok\" : true"))
+                            {
+                                Thread.Sleep(1000);
+                            }
+                        } while (!linkParser.Data.Contains("ok\" : true"));
                         
-                    });
-                    Thread.Sleep(TimeSpan.FromSeconds(5));
+                        //Отправляем данные на проверку
+                        lock (_locker)
+                        {
+                            reqParametres = new ReqParametres("http://localhost:8079/add", HttpMethod.Post, JsonConvert.SerializeObject(new DomainsContainer{domains = _sitesToCheck}));
+                            _sitesToCheck.Clear();
+                        }
+                        new LinkParser(reqParametres.Request);
+                        
+                        //Запускаем парсинг whois
+                        reqParametres = new ReqParametres("http://localhost:8079/run?parser=whois");
+                        new LinkParser(reqParametres.Request);
+                        
+                        //Проверяем ответ
+                        do
+                        {
+                            reqParametres = new ReqParametres("http://localhost:8079/domains");
+                            linkParser = new LinkParser(reqParametres.Request);
+                            if (!linkParser.Data.Contains("\"scanning\" : false"))
+                            {
+                                Thread.Sleep(1000);
+                            }
+                        } while (!linkParser.Data.Contains("\"scanning\" : false"));
+
+                        var allSites = linkParser.Data.ParsRegex("\"name\" : \"(.*?)\"(.*?)Created\" : \"(.*?)\"", 1);
+                        var allDates = linkParser.Data.ParsRegex("\"name\" : \"(.*?)\"(.*?)Created\" : \"(.*?)\"", 3);
+                        lock (_locker)
+                        {
+                                for (int i = 0; i < allSites.Count && i < allDates.Count; i++)
+                                {
+                                    if (DateTime.TryParse(allDates[i], out DateTime result))
+                                    {
+                                        if (_startDate.CompareTo(result) <= 0)
+                                        {
+                                            _sitesToCheckAfterWhois.Push(new Site{Link = allSites[i], SiteType = SiteType.ToCheck});
+                                        }
+                                        else
+                                        {
+                                            ControlsContainer.StartWhois++;
+                                            _amountToCheck--;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        ControlsContainer.StartWhois++;
+                                        _amountToCheck--;
+                                    }
+                                }
+                        }
+                        
+                        //Очищаем данные в ПО
+                        reqParametres = new ReqParametres("http://localhost:8079/clear");
+                        new LinkParser(reqParametres.Request);
+                    }
+                    Thread.Sleep(1000);
                 }
             }){IsBackground = true}.Start();
         }
@@ -53,19 +158,30 @@ namespace GoDaddyWatcher.Model
             {
                 while (true)
                 {
+                    bool hasAny;
+
                     lock (_locker)
                     {
-                        while (_sitesToCheck.Count > 0)
-                        {
-                            while (_maxThreadCount < Interlocked.Read(ref _threadCount))
-                            {
-                                Thread.Sleep(1000);
-                            }
-                            var site = _sitesToCheck.Pop();
-                            Check(site);
-                        }
+                        hasAny = _sitesToCheckAfterWhois.Count > 0;
                     }
-                    Thread.Sleep(TimeSpan.FromSeconds(1));
+
+                    if (hasAny)
+                    {
+                        
+                        while (_maxThreadCount < Interlocked.Read(ref _threadCount))
+                        {
+                            Thread.Sleep(1000);
+                        }
+
+                        Site site;
+                        lock (_locker)
+                        {
+                            site = _sitesToCheckAfterWhois.Pop();
+                        }
+                        Check(site);
+                    }
+                    
+                    Thread.Sleep(200);
                 }
             }){IsBackground = true}.Start();
         }
@@ -78,9 +194,17 @@ namespace GoDaddyWatcher.Model
             {
                 SiteChecker siteChecker = new SiteChecker(cachedValue);
                 siteChecker.Check();
+                _amountToCheck--;
                 using (MyDbContext myDbContext = new MyDbContext())
                 {
-                    var siteInDb = myDbContext.Sites.First(x => x.Link == cachedValue.Link);
+                    var siteInDb = myDbContext.Sites.FirstOrDefault(x => x.Link == cachedValue.Link);
+                    if (siteInDb == null)
+                    {
+                        myDbContext.Sites.Add(new Site
+                            {SiteType = SiteType.ToCheck, Link = cachedValue.Link});
+                        myDbContext.SaveChanges();
+                        siteInDb = myDbContext.Sites.First(x => x.Link == cachedValue.Link);
+                    }
                     siteInDb.Update(cachedValue);
                     myDbContext.SaveChanges();
                 }
@@ -128,21 +252,18 @@ namespace GoDaddyWatcher.Model
                     aggregator.CrawlData();
                     using (var myDbContext = new MyDbContext())
                     {
-                        aggregator.Sites.Distinct();
-                        aggregator.Sites.ForEach(x =>
+                        var newSites = aggregator.Sites.Where(x => !myDbContext.Sites.Any(z => z.Link == x.Link)).ToList();
+                        newSites.ForEach(x =>
                         {
                             x.SiteType = SiteType.ToCheck;
                         });
-                        var newSites = aggregator.Sites.Where(x => myDbContext.Sites.All(z => z.Link != x.Link)).ToList();
                         myDbContext.AddRange(newSites);
                         myDbContext.SaveChanges();
                         ControlsContainer.FoundSites += newSites.Count;
+                        _amountToCheck += newSites.Count;
                         lock (_locker)
                         {
-                            foreach (var newSite in newSites)
-                            {
-                                _sitesToCheck.Push(newSite);
-                            }
+                            _sitesToCheck.AddRange(newSites.Select(x=>x.Link));
                         }
                     }
                 }

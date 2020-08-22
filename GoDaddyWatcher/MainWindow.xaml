@@ -18,16 +18,16 @@
                 <TextBox x:Name="CitationFlow" HorizontalAlignment="Left" Height="38" Margin="360,34,-380,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18" Text="0" TextChanged="CitationFlow_TextChanged"/>
             </Grid>
         </GroupBox>
-        <Button x:Name="LoadProxy" Content="Загрузить прокси" Margin="-4,142,-7,0" VerticalAlignment="Top" Height="41" FontSize="16" Background="#FF0BB842" Click="LoadProxy_Click" BorderBrush="{x:Null}"/>
+        <Button x:Name="LoadProxy" Content="Загрузить прокси" Margin="-4,142,-7,0" VerticalAlignment="Top" Height="41" FontSize="16" Background="#FF0BB842" Click="LoadProxy_Click" BorderBrush="{x:Null}" IsEnabled="False"/>
         <TextBlock x:Name="StatsBlock" Margin="0,339,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="70" FontSize="16" Background="#FFFDE7E7" Padding="10,0,0,0"><Run Text="Всего сайтов в БД: 1000"/><LineBreak/><Run Text="Найдено новых за сеанс: 200"/><LineBreak/><Run Text="Найдено подходящих за сеанс: 120"/></TextBlock>
         <Label Content="Статистика" HorizontalAlignment="Left" Margin="0,305,0,0" VerticalAlignment="Top" Width="494" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="#FFF9F0F0"/>
-        <Button x:Name="StartWatching" Content="Начать отслеживание новых сайтов" Margin="0,254,0,0" VerticalAlignment="Top" Height="41" FontSize="16" Background="#FF0BB842" Click="StartWatching_Click" IsEnabled="False"/>
+        <Button x:Name="StartWatching" Content="Начать отслеживание новых сайтов" Margin="0,254,0,0" VerticalAlignment="Top" Height="41" FontSize="16" Background="#FF0BB842" Click="StartWatching_Click" IsEnabled="True"/>
         <Button x:Name="OpenTable" Content="Открыть таблицу" Margin="0,414,0,0" VerticalAlignment="Top" Height="41" FontSize="16" Background="#FF0BB842" Click="OpenTable_Click"/>
         <Button x:Name="OpenDB" Content="Открыть базу данных" Margin="0,460,0,0" VerticalAlignment="Top" Height="41" FontSize="16" Background="#FF1B7C3A" Click="OpenDB_Click"/>
-        <Button x:Name="ManualCheck" Content="Ручная загрузка" Margin="0,506,0,0" VerticalAlignment="Top" Height="41" FontSize="16" Background="#FF0BB842" Click="ManualCheck_Click" IsEnabled="False"/>
-        <TextBox x:Name="Login" HorizontalAlignment="Left" Height="31" Margin="10,218,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170"/>
-        <TextBox x:Name="Password" HorizontalAlignment="Left" Height="31" Margin="314,218,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170"/>
-        <Label Content="Логин прокси" HorizontalAlignment="Left" Margin="10,188,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" RenderTransformOrigin="-3.749,0.033" Width="170"/>
-        <Label Content="Пароль прокси" HorizontalAlignment="Left" Margin="314,188,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" RenderTransformOrigin="-3.749,0.033" Width="170"/>
+        <Button x:Name="ManualCheck" Content="Ручная загрузка" Margin="0,506,0,0" VerticalAlignment="Top" Height="41" FontSize="16" Background="#FF0BB842" Click="ManualCheck_Click" IsEnabled="True"/>
+        <TextBox x:Name="Login" HorizontalAlignment="Left" Height="31" Margin="10,218,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170" IsEnabled="False"/>
+        <TextBox x:Name="Password" HorizontalAlignment="Left" Height="31" Margin="314,218,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170" IsEnabled="False"/>
+        <Label Content="Логин прокси" HorizontalAlignment="Left" Margin="10,188,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" RenderTransformOrigin="-3.749,0.033" Width="170" IsEnabled="False"/>
+        <Label Content="Пароль прокси" HorizontalAlignment="Left" Margin="314,188,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="16" RenderTransformOrigin="-3.749,0.033" Width="170"  IsEnabled="False"/>
     </Grid>
 </Window>
