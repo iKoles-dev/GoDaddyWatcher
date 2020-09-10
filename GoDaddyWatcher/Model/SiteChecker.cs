@@ -59,7 +59,12 @@ namespace GoDaddyWatcher.Model
             {
                 FitsRequirements = false;
             }
-            Interlocked.Increment(ref ControlsContainer.EndCheckTrust);
+            else
+            {
+                Interlocked.Increment(ref ControlsContainer.EndCheckTrust);
+            }
+
+            Interlocked.Increment(ref ControlsContainer.AllCheckTrust);
 
             if (FitsRequirements)
             {

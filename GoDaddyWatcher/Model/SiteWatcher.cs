@@ -58,7 +58,7 @@ namespace GoDaddyWatcher.Model
                         {
                             ControlsContainer.Stats.Text =
                                 // $"Всего сайтов в базе: {allCount}\nНайдено за сеанс: {ControlsContainer.FoundSites}/ CheckTrust: {ControlsContainer.StartWebarchive} / Google {ControlsContainer.StartGoogle}\nНайдено подходящих за сеанс: {ControlsContainer.FoundFittedSites}";
-                                $"Всего сайтов в базе: {allCount}\nНайдено за сеанс: {ControlsContainer.FoundSites} \\ {_amountToCheck} \\ WS: {ControlsContainer.StartWhois} \\ CT: {ControlsContainer.EndCheckTrust} \\ WA: {ControlsContainer.EndWebarchive}\nНайдено подходящих за сеанс: {ControlsContainer.FoundFittedSites}";
+                                $"Всего сайтов в базе: {allCount}\nНайдено за сеанс: {ControlsContainer.FoundSites} \\ {_amountToCheck} \\ WS: {ControlsContainer.StartWhois} \\ CT: {ControlsContainer.AllCheckTrust} \\ {ControlsContainer.EndCheckTrust} \\ WA: {ControlsContainer.EndWebarchive}\nНайдено подходящих за сеанс: {ControlsContainer.FoundFittedSites}";
 
                         });
                     }
