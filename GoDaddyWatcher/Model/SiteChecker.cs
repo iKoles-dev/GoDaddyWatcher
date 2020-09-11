@@ -23,63 +23,16 @@ namespace GoDaddyWatcher.Model
 
         public void Check()
         {
-            // _site.PassGoogleSearchTest = GoogleCheck();
-            // if (_site.PassGoogleSearchTest)
-            // {
-            //     CheckTrust();
-            //     if (IsFitsMinimalValues())
-            //     {
-            //         WebArchiveCrawl();
-            //         FinalCheck();
-            //     }
-            // }
-            
-            // WebArchiveCrawl();
-            // FinalCheck();
-            // if (FitsRequirements)
-            // {
-            //     Interlocked.Increment(ref ControlsContainer.EndWebarchive);
-            //     CheckTrust();
-            //     if (!IsFitsMinimalValues())
-            //     {
-            //         FitsRequirements = false;
-            //     }
-            //     else
-            //     {
-            //         Interlocked.Increment(ref ControlsContainer.EndCheckTrust);
-            //         if (!GoogleCheck())
-            //         {
-            //             FitsRequirements = false;
-            //         }
-            //     }
-            // }
-            
-            CheckTrust();
-            if (!IsFitsMinimalValues())
-            {
-                FitsRequirements = false;
-            }
-            else
-            {
-                Interlocked.Increment(ref ControlsContainer.EndCheckTrust);
-            }
-
-            Interlocked.Increment(ref ControlsContainer.AllCheckTrust);
-
+            WebArchiveCrawl();
+            FinalCheck();
             if (FitsRequirements)
             {
-                WebArchiveCrawl();
-                FinalCheck();
-                if (FitsRequirements)
+                Interlocked.Increment(ref ControlsContainer.EndWebarchive);
+                if (!GoogleCheck())
                 {
-                    Interlocked.Increment(ref ControlsContainer.EndWebarchive);
-                    if (!GoogleCheck())
-                    {
-                        FitsRequirements = false;
-                    }
+                    FitsRequirements = false;
                 }
             }
-            
         }
 
         private void FinalCheck()

@@ -162,7 +162,7 @@ namespace GoDaddyWatcher.Model
 
                     lock (_locker)
                     {
-                        hasAny = _sitesToCheckAfterWhois.Count > 0;
+                        hasAny = _sitesToCheckAfterWhois.Any();
                     }
 
                     if (hasAny)
@@ -178,14 +178,48 @@ namespace GoDaddyWatcher.Model
                         {
                             site = _sitesToCheckAfterWhois.Pop();
                         }
-                        Check(site);
+
+                        var passCheckTrust = CheckTrustVerify(site);
+                        if (passCheckTrust)
+                        {
+                            Check(site);
+                        }
                     }
-                    
-                    Thread.Sleep(200);
+
+                    if (hasAny == false)
+                    {
+                        Thread.Sleep(200);
+                    }
                 }
             }){IsBackground = true}.Start();
         }
 
+        private bool CheckTrustVerify(Site site)
+        {
+            LinkParser linkParser;
+            do
+            {
+                ReqParametres reqParametres = new ReqParametres($"https://checktrust.ru/app.php?r=host/app/summary/basic&applicationKey=619f496e644ba8edcd702704176a7b26&host={site.Link}&parameterList=spam,mjDin,mjCF,mjTF");
+                linkParser = new LinkParser(reqParametres.Request);
+                try
+                {
+                    site.Bl = decimal.Parse(linkParser.Data.ParsFromTo("mjDin\":\"", "\""), CultureInfo.InvariantCulture);
+                    site.TrustFlow = decimal.Parse(linkParser.Data.ParsFromTo("mjTF\":\"", "\""), CultureInfo.InvariantCulture);
+                    site.CitationFlow = decimal.Parse(linkParser.Data.ParsFromTo("mjCF\":\"", "\""), CultureInfo.InvariantCulture);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            } while (linkParser.Data.Contains("message\":\"Host "));
+            bool isPassedTest = site.Bl>=ControlsContainer.Bl && site.CitationFlow>=ControlsContainer.CitationFlow && site.TrustFlow>=ControlsContainer.TrustFlow;
+            if (isPassedTest)
+            {
+                Interlocked.Increment(ref ControlsContainer.EndCheckTrust);
+            }
+            Interlocked.Increment(ref ControlsContainer.AllCheckTrust);
+            return isPassedTest;
+        }
         private void Check(Site site)
         {
             var cachedValue = site;

@@ -202,7 +202,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="HomeBrew\Proxies.cs" />
-    <Compile Include="obj\Release\Table.g.cs" />
     <Compile Include="View\DataBaseTable.xaml.cs">
       <DependentUpon>DataBaseTable.xaml</DependentUpon>
     </Compile>
@@ -272,10 +271,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="obj\Release\App.baml" />
-    <Content Include="obj\Release\GoDaddyWatcher_MarkupCompile.cache" />
-    <Content Include="obj\Release\MainWindow.baml" />
-    <Content Include="obj\Release\Table.baml" />
     <None Include="Resources\success.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
